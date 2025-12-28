@@ -3,7 +3,11 @@
 import os
 
 
+data_locations = {}
 
+data_locations["bat.base"] =	"/sys/class/power_supply/BAT0/"
+data_locations["bat.percent"]=	"/sys/class/power_supply/BAT0/percent"
+data_locations["bat.status"]=	"/sys/class/power_supply/BAT0/status"
 
 commands = None # This gets populated when this library is run by PUR.py
 
@@ -103,9 +107,11 @@ def run(code):
 		line = lines[i]
 		if line != "":
 			if False in [x == " " for x in list(line)]:
-				print(line)
+				#print(line)
 				runLine(line)
 		i = i+1
+
+
 def _executeFormatedFunction(function):
 	internals = ["var","notif","bat.percent"]
 	func = function.split(" ")[0]
@@ -113,8 +119,28 @@ def _executeFormatedFunction(function):
 		_runInternalFunction(function)
 	else:
 		_runOSFunction(function)
+def _runInternalFunction(function):
+	func = function.split(" ")[0]
+	if func == "var":
+		_setVar(function)
+	elif func == "notif":
+		_sendNotification(function)
+	elif func == "bat.percent":
+		_getBatPercent(function)
+	elif func == "bat.status":
+		_getBatStatus(function)
 
 
+def _setVar(function):
+	_todoError("Variables setting has not yet been implemented")
+def _todoError(text):
+	raise NotImplementedError(text)
+def _sendNotification(function):
+	_todoError("Notifications Not Implemented")
+def _getBatPercent(function):
+	_todoError("Getting battery percentage is not yet implemented")
+def _getBatStatus(function):
+	_todoError("Getting battery status is not yet implemented")
 
 if __name__ == "__main__":
 	funcData = formatFunction("echo %x")

@@ -2,4 +2,4 @@
 
 
 echo Test
-
+var $test = 'Hello World'

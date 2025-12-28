@@ -10,6 +10,8 @@ commands = registry.dataset()
 
 
 commands.addData(registry.createCommandChain(name = "echo %x",commands = ["echo %x%"]))
+commands.addData(registry.createCommandChain(name = "var %x %= %y",commands = ["var %x% %y%"]))
+
 
 if __name__ == "__main__":
 	registry.print_dataset(commands)
