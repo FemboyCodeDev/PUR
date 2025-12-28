@@ -91,7 +91,11 @@ def runLine(line):
 	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
 	print("result", formatedFunction)
 def run(code):
-	runLine(code)
+	for line in code.split("\n"):
+		if line != "":
+			if False in [x == " " for x in list(line)]:
+				print(line)
+				runLine(line)
 
 
 if __name__ == "__main__":
