@@ -1,17 +1,17 @@
 
 
-echo 'testing oneword comment'
-rem test
+# rem echo 'testing oneword comment'
+# rem test
 
-echo 'testing string formated comment'
-rem 'Hello this is a test'
+# echo 'testing string formated comment'
+# rem 'Hello this is a test'
 
-echo 'Testing un stringed comment'
-rem testing 123
+# echo 'Testing un stringed comment'
+# rem testing 123
 
-echo 'Testing hashtag comment'
+# echo 'Testing hashtag comment'
 # testing123 this is a comment
 
-rem This is a test 
+# rem This is a test 
 echo Test
 var $test = 'Hello World'

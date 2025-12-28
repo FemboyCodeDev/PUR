@@ -12,6 +12,9 @@ data_locations["bat.status"]=	"/sys/class/power_supply/BAT0/status"
 commands = None # This gets populated when this library is run by PUR.py
 
 
+variables = None # This gets replaced with a dataset when the library is run by PUR.py
+dataObject = None # This gets replaced with the dataObject class when the library is run by PUR.py
+dataClass = None # This gets replaced with the data class when the library is run by PUR.py
 
 internal_functions = ["var","notif","bat.percent","rem"]
 
@@ -136,8 +139,36 @@ def _runInternalFunction(function):
 		_getBatStatus(function)
 
 
+
+# ==== Set variable function ====
+# THIS PIECE OF CODE IS AN ABSOLUTE PIECE OF SHIT AND NEEDS REPLACING
 def _setVar(function):
-	_todoError("Variables setting has not yet been implemented")
+
+	print(function)
+	varName = function.split(" ")[1]
+	print(varName)
+	contents = function.split(" ")
+	contents.pop(0)
+	contents.pop(0)
+	print(contents)
+	contents = " ".join(contents)
+	print(contents)
+	
+	ObjectType = "NoneType"
+	
+	if varName[0] == "$":
+		ObjectType = "string"
+	print(ObjectType)
+
+	if variables is not None:
+		object = dataObject(type = ObjectType)
+		object.rawData = [contents]
+		dataObj = dataClass(name = varName, object = object)
+		variables.addData(dataObj)
+		#print_dataset(variables)
+	#_todoError("Variables setting has not yet been implemented")
+
+
 def _todoError(text):
 	raise NotImplementedError(text)
 def _sendNotification(function):
