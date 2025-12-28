@@ -11,7 +11,15 @@ data_locations["bat.status"]=	"/sys/class/power_supply/BAT0/status"
 
 commands = None # This gets populated when this library is run by PUR.py
 
-def formatFunction(function):
+
+
+internal_functions = ["var","notif","bat.percent"]
+
+
+# ==== Format Function ====
+#
+
+def formatFunction(function): 
 	functionData = []
 	for item in function.split(" "):
 		if item[0] == "%":
@@ -24,19 +32,15 @@ def formatFunction(function):
 
 def findFunctionInfo(functionData):
 	func = functionData.split(" ")[0]
-	#print(func)
 
 	for item in commands.data: # Where all the objects are stored
-		#print(item.name, type(item))
 		currentFunc = (item.object._getFunction())
-		#print(currentFunc,func)
 		#Compare the two functions to see if the primary executor is the same
 		funcOther = currentFunc.split(" ")[0]
 		if funcOther == func:
-			#print("Found Function")
 			return item
 
-def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function that could be run in the shell?
+def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function (string) that could be run in the shell?
 	funcInData = funcIn.split(" ")
 	data1 = []
 	for item in funcInData:
@@ -50,12 +54,14 @@ def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function that coul
 
 		else:
 			data1.append(item)
-	#print(data1)
 	for i in range(len(data1)-1,0,-1):
-		#print(data1[i],i)
 		if len(data1[i]) == 0:
 			data1.pop(i)
-	#print("".join(data1),data1)
+
+	# ==== Variable grouping ======
+	# Groups the variable into sections
+	# Example:
+	#	Foo 'bar' 'fee' -> [bar,fee]
 	vars = []
 	funcName = data1.pop(0)
 	var = ""
@@ -68,32 +74,30 @@ def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function that coul
 		if not string:
 			vars.append(var)
 			var = ""
-	#print(vars)
+	# ==== Variable extraction ====
+	# Names the variables and puts them in a dictionary
 	inputs = dict({})
 	index = 0 # This is the current index of the variable data from funcIn
 	for item in funcData:
-		#print(item)
 		if "input" in item:
-			#print(item["input"])
 			inputs[item["input"]] = vars.pop(0)
-	#print(inputs)
+
+	# ==== Applies the variables ====
+	# TODO: REPLACE THIS
+	# THIS CODE IS INCREADIBLY INSECURE AND WILL CAUSE UNWANTED CODE EXECUTION
+	# REPLACE THIS PIECE OF SHIT ASAP
 	for input in inputs:
-		#print(input)
 		funcOut = inputs[input].join(funcOut.split(f"%{input}%")) 
 									# TODO: Fix security vunribility that makes it so that you can 
 									# insert new variables and potenstionally other shell code 
 									# with variable content
-	#print(funcOut)
 	return funcOut
 
 
 def runLine(line):
 	funcInfo = findFunctionInfo(line)
-	#print(funcInfo)
 	funcData = formatFunction(funcInfo.name)
-	#print(funcData)
 	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
-	#print("result", formatedFunction)
 	_executeFormatedFunction(formatedFunction)
 
 def _runOSFunction(function):
@@ -107,13 +111,12 @@ def run(code):
 		line = lines[i]
 		if line != "":
 			if False in [x == " " for x in list(line)]:
-				#print(line)
 				runLine(line)
 		i = i+1
 
 
 def _executeFormatedFunction(function):
-	internals = ["var","notif","bat.percent"]
+	internals = internal_functions # TODO: Remove this shitty line of code
 	func = function.split(" ")[0]
 	if func in internals:
 		_runInternalFunction(function)
