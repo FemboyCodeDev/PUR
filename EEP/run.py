@@ -1,6 +1,6 @@
 
 
-
+import os
 
 
 
@@ -89,13 +89,31 @@ def runLine(line):
 	funcData = formatFunction(funcInfo.name)
 	#print(funcData)
 	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
-	print("result", formatedFunction)
+	#print("result", formatedFunction)
+	_executeFormatedFunction(formatedFunction)
+
+def _runOSFunction(function):
+	os.system(function)
+
+
 def run(code):
-	for line in code.split("\n"):
+	lines = code.split("\n")
+	i = 0
+	while i < len(lines):
+		line = lines[i]
 		if line != "":
 			if False in [x == " " for x in list(line)]:
 				print(line)
 				runLine(line)
+		i = i+1
+def _executeFormatedFunction(function):
+	internals = ["var","notif","bat.percent"]
+	func = function.split(" ")[0]
+	if func in internals:
+		_runInternalFunction(function)
+	else:
+		_runOSFunction(function)
+
 
 
 if __name__ == "__main__":
