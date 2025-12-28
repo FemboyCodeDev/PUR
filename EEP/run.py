@@ -13,7 +13,7 @@ commands = None # This gets populated when this library is run by PUR.py
 
 
 
-internal_functions = ["var","notif","bat.percent"]
+internal_functions = ["var","notif","bat.percent","rem"]
 
 
 # ==== Format Function ====
@@ -95,6 +95,8 @@ def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function (string) 
 
 
 def runLine(line):
+	if line[0] == "#":
+		return
 	funcInfo = findFunctionInfo(line)
 	funcData = formatFunction(funcInfo.name)
 	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
