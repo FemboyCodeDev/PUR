@@ -25,6 +25,16 @@ class dataObject: # The actual data in the dataset
 			return ";".join([x._getDataString() for x in self.data])
 		if self.type == "command":
 			return str(self.rawData[0])
+	def _getFunction(self):
+		if self.type in ["command"]:
+			return str(self.rawData[0])
+		elif self.type in ["commandChain"]:
+			if len(self.data) == 1:
+				return self.data[0]._getFunction()
+			else:
+				raise TypeError("This is command chain, and not a command, you cannot just get the function inside of it")
+		else:
+			raise TypeError(f"This is a {self.type} and this function cannot be run on it")
 
 class data:
 	def __init__(self,name = "", object = dataObject(type="None")):

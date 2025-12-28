@@ -2,6 +2,11 @@
 
 
 
+
+
+
+commands = None # This gets populated when this library is run by PUR.py
+
 def formatFunction(function):
 	functionData = []
 	for item in function.split(" "):
@@ -13,8 +18,21 @@ def formatFunction(function):
 	return functionData
 
 
+def findFunctionInfo(functionData):
+	func = functionData.split(" ")[0]
+	#print(func)
 
-def reformatRunFunction(funcData,funcIn,funcOut):
+	for item in commands.data: # Where all the objects are stored
+		#print(item.name, type(item))
+		currentFunc = (item.object._getFunction())
+		#print(currentFunc,func)
+		#Compare the two functions to see if the primary executor is the same
+		funcOther = currentFunc.split(" ")[0]
+		if funcOther == func:
+			#print("Found Function")
+			return item
+
+def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function that could be run in the shell?
 	funcInData = funcIn.split(" ")
 	data1 = []
 	for item in funcInData:
@@ -28,12 +46,12 @@ def reformatRunFunction(funcData,funcIn,funcOut):
 
 		else:
 			data1.append(item)
-	print(data1)
+	#print(data1)
 	for i in range(len(data1)-1,0,-1):
-		print(data1[i],i)
+		#print(data1[i],i)
 		if len(data1[i]) == 0:
 			data1.pop(i)
-	print("".join(data1),data1)
+	#print("".join(data1),data1)
 	vars = []
 	funcName = data1.pop(0)
 	var = ""
@@ -46,22 +64,35 @@ def reformatRunFunction(funcData,funcIn,funcOut):
 		if not string:
 			vars.append(var)
 			var = ""
-	print(vars)
+	#print(vars)
 	inputs = dict({})
 	index = 0 # This is the current index of the variable data from funcIn
 	for item in funcData:
-		print(item)
+		#print(item)
 		if "input" in item:
-			print(item["input"])
+			#print(item["input"])
 			inputs[item["input"]] = vars.pop(0)
-	print(inputs)
+	#print(inputs)
 	for input in inputs:
-		print(input)
+		#print(input)
 		funcOut = inputs[input].join(funcOut.split(f"%{input}%")) 
 									# TODO: Fix security vunribility that makes it so that you can 
 									# insert new variables and potenstionally other shell code 
 									# with variable content
-	print(funcOut)
+	#print(funcOut)
+	return funcOut
+
+
+def runLine(line):
+	funcInfo = findFunctionInfo(line)
+	#print(funcInfo)
+	funcData = formatFunction(funcInfo.name)
+	#print(funcData)
+	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
+	print("result", formatedFunction)
+def run(code):
+	runLine(code)
+
 
 if __name__ == "__main__":
 	funcData = formatFunction("echo %x")
