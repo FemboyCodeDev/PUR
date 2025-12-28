@@ -6,15 +6,26 @@ class dataObject:
 		self.type = type # What type is this object, stored in a string
 		self.canHaveData = False # Can this object store other objects
 		self.data = [] # This is where all the data objects get stored
+		self.rawData = [] # This is where raw data like string data gets stored
 	def addData(self,data):
 		if self.canHaveData:
 			self.data.append(data)
 
-
+	def getData(self, format = "string"):
+		if format == "string":
+			return self._getDataString()
+	def _getDataString(self):
+		if self.type == "None":
+			return "Nonetype"
+		if self.type == "N/A":
+			return "Not Applicable"
+		if self.type == "string":
+			return "".join([str(x) for x in self.rawData])
 
 class data:
 	def __init__(self,name = "", object = dataObject(type="None")):
 		self.object = object
+		self.name = name
 	def addData(self,data):
 		if self.object.canHaveData:
 			self.object.addData(data)
@@ -27,4 +38,13 @@ class dataset:
 	def addData(self,data):
 		self.data.append(data)
 
+
+
+
+
+def print_dataset(dataset):
+	for data in dataset.data:
+		name = data.name
+		data = data.object.getData(format = "string")
+		print(f"{name} : {data}")
 
