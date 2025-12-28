@@ -13,7 +13,7 @@ class dataObject:
 
 
 class data:
-	def __init__(self,name = "", object = dataObject(type="None"):
+	def __init__(self,name = "", object = dataObject(type="None")):
 		self.object = object
 	def addData(self,data):
 		if self.object.canHaveData:
