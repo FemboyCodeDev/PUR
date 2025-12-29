@@ -18,7 +18,7 @@ var $test = 'Hello World'
 
 
 label $procStart
-echo Testing Procedure
+echo 'Testing Procedure'
 label $procEnd
 
 

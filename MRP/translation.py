@@ -13,7 +13,7 @@ commands = registry.dataset()
 # ==== OS commands ====
 
 commands.addData(registry.createCommandChain(name = "echo %x",commands = ["echo %x%"]))
-
+commands.addData(registry.createCommandChain(name = "beep %x",commands = ['echo -e "\a"'])) # This may not work at all, but it definetely wont work on windows
 
 
 # ==== Internal commands ====

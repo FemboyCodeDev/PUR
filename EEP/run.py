@@ -135,7 +135,6 @@ def _runOSFunction(function):
 	os.system(function)
 
 
-
 global _lineIndex
 _lineIndex = 0
 def run(code):
