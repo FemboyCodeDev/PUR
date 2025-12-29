@@ -149,7 +149,7 @@ def _runInternalFunction(function):
 
 def _setLabel(function):
 	global _lineIndex
-	print(f"{function} {_lineIndex}")
+	#print(f"{function} {_lineIndex}")
 	splitFunction = function.split(" ")
 	allowedStarts = ["$"]
 	for item in splitFunction:
@@ -163,15 +163,15 @@ def _setLabel(function):
 # THIS PIECE OF CODE IS AN ABSOLUTE PIECE OF SHIT AND NEEDS REPLACING
 def _setVar(function):
 
-	print(function)
+	#print(function)
 	varName = function.split(" ")[1]
-	print(varName)
+	#print(varName)
 	contents = function.split(" ")
 	contents.pop(0)
 	contents.pop(0)
-	print(contents)
+	#print(contents)
 	contents = " ".join(contents)
-	print(contents)
+	#print(contents)
 	
 	ObjectType = "NoneType"
 	
@@ -180,7 +180,7 @@ def _setVar(function):
 	else:
 		#TODO: Implement variable type not supported error
 		pass
-	print(ObjectType)
+	#print(ObjectType)
 
 	if variables is not None:
 		object = dataObject(type = ObjectType)

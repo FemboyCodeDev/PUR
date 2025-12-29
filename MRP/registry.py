@@ -91,9 +91,31 @@ class dataset:
 
 
 def print_dataset(dataset):
-	print(f"Showing Dataset: {dataset.name}")
+	print()
+	#print(f"Showing Dataset: {dataset.name}")
+	dataDisplay = []
+	lengths = [0,0]
 	for data in dataset.data:
 		name = data.name
 		data = data.object.getData(format = "string")
-		print(f"{name} : {data}")
-
+		dataDisplay.append((name,data))
+		lengths = [max(len(x),y) for x,y in zip([name,data],lengths)]
+	
+	lengths = [x+2 for x in lengths]
+	#print("#"+"-"*(sum(lengths)+1)+"#")
+	displayText = f"{dataset.name}"
+	endPadding = sum(lengths) - len(displayText)
+	endPadding = endPadding + 2
+	if endPadding < 0:
+		length[1] += -endPadding
+		endPadding = 0
+	rowSeperator = "|" + "-" * (sum(lengths)+1) + "|"
+	displayText = displayText + (" "*endPadding) + "|"
+	#print(rowSeperator)
+	print(displayText)
+	print(rowSeperator)	
+	for item in dataDisplay:
+		
+		item = [x + (" ")*(y-len(x)) for x,y in zip(item,lengths)]
+		name,data = item
+		print(f"|{name}|{data}|")
