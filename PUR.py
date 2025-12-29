@@ -1,6 +1,4 @@
-  
-
-
+#!/user/bin/env python
 
 import MRP # Imports the registry system
 import EEP
