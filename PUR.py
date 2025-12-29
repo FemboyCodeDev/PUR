@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 #!/user/bin/env python
+=======
+  
+
+
+
+>>>>>>> parent of e229f76 (Added shebang)
 import MRP # Imports the registry system
 import EEP
 import argparse
