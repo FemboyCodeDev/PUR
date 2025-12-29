@@ -22,7 +22,7 @@ internal_functions = ["var","notif","bat.percent","rem","label","proc"]
 # ==== Format Function ====
 #
 
-def formatFunction(function): 
+def formatFunction(function):
 	functionData = []
 	for item in function.split(" "):
 		if item[0] == "%":
@@ -94,6 +94,31 @@ def reformatRunFunction(funcData,funcIn,funcOut): # Outputs a function (string) 
 									# TODO: Fix security vunribility that makes it so that you can 
 									# insert new variables and potenstionally other shell code 
 									# with variable content
+	
+
+	excludes = ["var","label"]
+	if funcOut.split(" ")[0] not in excludes:
+		func = funcOut
+		funcOut = []
+		variablePrefixes = ["$"] # TODO: Move this to start of code
+		for item in func.split(" "):
+			if len(item) > 0:
+				if item[0] in variablePrefixes:
+					variableName = item
+					#print("Variable to replace:", variableName)
+					# === Find Variable ===
+					for dataPoint in variables.data:
+						#print(dataPoint.name)
+						if dataPoint.name == variableName:
+							funcOut.append(dataPoint.object.getData(format = "string"))
+							break
+					continue
+				else:
+					funcOut.append(item) 	# TODO: Make this peice of code more elegant and faster
+					continue 		# TODO: Remove the continue call
+			funcOut.append(item)
+		#print("Debug Spot1:", funcOut)
+		funcOut = " ".join(funcOut)
 	return funcOut
 
 
@@ -103,6 +128,7 @@ def runLine(line):
 	funcInfo = findFunctionInfo(line)
 	funcData = formatFunction(funcInfo.name)
 	formatedFunction = reformatRunFunction(funcData, line, funcInfo.object._getFunction())
+	#print(formatedFunction)
 	_executeFormatedFunction(formatedFunction)
 
 def _runOSFunction(function):
@@ -172,9 +198,9 @@ def _setVar(function):
 	#print(contents)
 	contents = " ".join(contents)
 	#print(contents)
-	
+
 	ObjectType = "NoneType"
-	
+
 	if varName[0] == "$":
 		ObjectType = "string"
 	else:
