@@ -13,5 +13,11 @@
 # testing123 this is a comment
 
 # rem This is a test 
-echo Test
+# echo Test
 var $test = 'Hello World'
+
+
+label $procStart
+echo Testing Procedure
+label $procEnd
+

@@ -25,6 +25,8 @@ class dataObject: # The actual data in the dataset
 			return ";".join([x._getDataString() for x in self.data])
 		if self.type == "command":
 			return str(self.rawData[0])
+		if self.type == "procedure":
+			return f"Procedure: {self.data[0].object._getDataString()} -> {self.data[1].object._getDataString()}"
 	def _getFunction(self):
 		if self.type in ["command"]:
 			return str(self.rawData[0])
@@ -55,6 +57,28 @@ def createCommandChain(name = "chain", commands = []): # This defines a command 
 	obj.data = objects
 	return data(name = name,object = obj)
 
+
+def createProcedure(name = "procedure",startName = "None",endName= "None"):
+	startObject = None
+	endObject = None
+	allowedTypes = ["linePointer"]
+	procedureObject = dataObject(type = "procedure")
+	for data in dataset.data:
+		if data.name in [startName,endName]:
+			if data.object.type in allowedTypes:
+				targetObject = data
+			else:
+				print("Object of type {data.object.type} is not allowed") # TODO: Make it display allowed types
+				continue
+			if data.name == startName:
+				startObject = data
+			elif data.name == endName:
+				endObject = data
+			else:
+				raise Exception
+	procedureObject.addData(startObject)
+	procedureObject.addData(endObject)
+	return data(name = name, object = procedureObject)
 class dataset:
 	def __init__(self, name = "Unnamed Dataset"):
 		self.data = []

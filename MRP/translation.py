@@ -20,6 +20,10 @@ commands.addData(registry.createCommandChain(name = "echo %x",commands = ["echo 
 
 commands.addData(registry.createCommandChain(name = "var %x %= %y",commands = ["var %x% %y%"]))
 commands.addData(registry.createCommandChain(name = "bat.percentage %x", commands = ["bat.percentage %x"]))
+commands.addData(registry.createCommandChain(name = "goto %x", commands = ["goto %x%"])) # Goes to line in variable %x
+commands.addData(registry.createCommandChain(name = "label %x", commands = ["label %x%"])) # Stores the line in variable %x
+commands.addData(registry.createCommandChain(name = "proc %x %y %z", commands = ["proc %x %y %z"])) 	# Defines a procedure between the lines stored in
+													# variable %x and variable %y
 
 
 # ==== Comment commands ===

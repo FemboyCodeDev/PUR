@@ -16,7 +16,7 @@ variables = None # This gets replaced with a dataset when the library is run by 
 dataObject = None # This gets replaced with the dataObject class when the library is run by PUR.py
 dataClass = None # This gets replaced with the data class when the library is run by PUR.py
 
-internal_functions = ["var","notif","bat.percent","rem"]
+internal_functions = ["var","notif","bat.percent","rem","label","proc"]
 
 
 # ==== Format Function ====
@@ -109,13 +109,18 @@ def _runOSFunction(function):
 	os.system(function)
 
 
+
+global _lineIndex
+_lineIndex = 0
 def run(code):
+	global _lineIndex
 	lines = code.split("\n")
 	i = 0
 	while i < len(lines):
 		line = lines[i]
 		if line != "":
 			if False in [x == " " for x in list(line)]:
+				_lineIndex = i
 				runLine(line)
 		i = i+1
 
@@ -137,8 +142,22 @@ def _runInternalFunction(function):
 		_getBatPercent(function)
 	elif func == "bat.status":
 		_getBatStatus(function)
+	elif func == "label":
+		_setLabel(function)
+	else:
+		_todoError(f"{func} not implemented")
 
+def _setLabel(function):
+	global _lineIndex
+	print(f"{function} {_lineIndex}")
+	splitFunction = function.split(" ")
+	allowedStarts = ["$"]
+	for item in splitFunction:
 
+		if len(item) > 0:
+			if item[0] in allowedStarts:
+				_setVar(f"var {item} {_lineIndex}")
+	#_todoError("Label has not yet been implemented")
 
 # ==== Set variable function ====
 # THIS PIECE OF CODE IS AN ABSOLUTE PIECE OF SHIT AND NEEDS REPLACING
@@ -158,6 +177,9 @@ def _setVar(function):
 	
 	if varName[0] == "$":
 		ObjectType = "string"
+	else:
+		#TODO: Implement variable type not supported error
+		pass
 	print(ObjectType)
 
 	if variables is not None:
