@@ -1,24 +1,18 @@
 #!/user/bin/env python
-
 import MRP # Imports the registry system
 import EEP
 import argparse
-
 EEP.run.commands = MRP.translation.commands
 EEP.run.variables = MRP.registry.dataset(name = "Variables")
 EEP.run.dataObject = MRP.registry.dataObject
 EEP.run.dataClass = MRP.registry.data
-
-
 #print(MRP.config.version)
 #print(MRP.config.shell.template)
-
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(
 		description = "PUR: Programmable Utilility Resource"
 	)
 	parser.add_argument("filename",nargs = "?")
-
 	args = parser.parse_args()
 	#print(args)
 	if args.filename:
