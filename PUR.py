@@ -1,4 +1,4 @@
-
+  
 
 
 
@@ -12,8 +12,8 @@ EEP.run.dataObject = MRP.registry.dataObject
 EEP.run.dataClass = MRP.registry.data
 
 
-
-
+#print(MRP.config.version)
+#print(MRP.config.shell.template)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(
@@ -22,7 +22,7 @@ if __name__ == "__main__":
 	parser.add_argument("filename",nargs = "?")
 
 	args = parser.parse_args()
-	print(args)
+	#print(args)
 	if args.filename:
 		code = "echo 'testing 123'"
 		code = ""
@@ -31,6 +31,8 @@ if __name__ == "__main__":
 		EEP.run.run(code)
 		MRP.registry.print_dataset(EEP.run.variables)
 	else:
+		print(MRP.config.shell.template.format(name = MRP.config.name,version = MRP.config.version, device = "Undefined"))
+		print('Type "help", "copyright", "credits" or "license()" for more information')
 		EEP.run.running = True
 		#global EEP.run._lineIndex
 		code = []
