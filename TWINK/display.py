@@ -7,6 +7,12 @@ def colorise(r,g,b):
 	return f"\x1b[38;2;{r};{g};{b}m"
 
 
+
+
+hashingPrimes = [4657,2347]
+
+
+
 class display:
 	def __init__(self):
 		self.fontHeight = 14
@@ -19,11 +25,25 @@ class display:
 		self.graphics = []
 		self.scrollx = 0
 		self.scrolly = 0
+		self.locationHashes = {}
+
 	def addDisplayChar(self,object):
 		self.graphics.append(object)
+
 	def addChar(self,x = 0,y = 0,char = " ", color = (255,0,0)):
 		object = displayChar(x = x, y = y, char = char,color = color)
 		self.addDisplayChar(object)
+
+		hash = self.calculateHash(x,y)
+
+		if hash not in self.locationHashes:
+			self.locationHashes[hash] = []
+
+		self.locationHashes[hash].append(object)
+
+	def calculateHash(self,x,y):
+		hash = x*hashingPrimes[0]+y*hashingPrimes[1]
+		return hash
 	def render(self):
 		content = ""
 		for sy in range(0,int(self.height/self.fontHeight)):
@@ -37,7 +57,8 @@ class display:
 		print(content)
 	def getChar(self,x = 0,y = 0):
 		char = " "
-		for item in self.graphics:
+		hash = self.calculateHash(x,y)
+		for item in self.locationHashes[hash]:
 			if item.atXY(x,y,scroll = (self.scrollx,self.scrolly)):
 				char = item.getChar()
 		return char
