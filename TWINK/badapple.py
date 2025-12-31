@@ -13,7 +13,7 @@ window = display.display()
 
 
 
-files = [""]
+files = []
 
 
 frames = {}
