@@ -13,7 +13,7 @@ window = display.display()
 
 
 
-files = ["uv.TWINK"]
+files = [""]
 
 
 frames = {}
