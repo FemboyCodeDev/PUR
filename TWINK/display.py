@@ -1,5 +1,5 @@
 #
-
+import sys
 
 def colorise(r,g,b):
 #	return "\\e[31m"
@@ -57,7 +57,12 @@ class display:
 				row += self.getChar(x=x,y=y)
 			#print(row)
 			content += row+ "\n"
-		print(content)
+		row = 1
+		col = 1
+		sys.stdout.write(f"\033[{row};{col}H")
+		sys.stdout.flush()
+		print(content,flush = True)
+		
 	def getChar(self,x = 0,y = 0):
 		char = " "
 		currentDepth = None
@@ -65,7 +70,7 @@ class display:
 		#print(hash)
 		if hash in self.locationHashes:
 			for item in self.locationHashes[hash]:
-				print(item)
+				#print(item)
 				if item.atXY(x,y,scroll = (self.scrollx,self.scrolly)):
 					if currentDepth == None:
 						currentDepth = item.depth - 1
@@ -132,7 +137,7 @@ if __name__  == "__main__":
 	for x in range(0,128,1):
 		for y in range(0, 128, 1):
 			pass
-			#window.addChar(x = x, y = y, char = FullBlock,color = (x*2,y*2,0))
+			window.addChar(x = x, y = y, char = FullBlock,color = (x*2,y*2,0))
 
 
 	with open("img.TWINK") as file:
